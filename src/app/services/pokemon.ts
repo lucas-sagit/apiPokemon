@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class PokemonService {
 
-  private baseUrl = 'https://pokeapi.co/api/v2/pokemon';
+  private baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
   constructor(private http: HttpClient) {}
 

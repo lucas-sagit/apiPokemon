@@ -1,6 +1,19 @@
-<div *ngIf="pokemon">
-  <h2>{{ pokemon.name | uppercase }}</h2>
-  <img [src]="pokemon.sprites.front_default" alt="Imagem de {{ pokemon.name }}">
-  <p><strong>Altura:</strong> {{ pokemon.height }}</p>
-  <p><strong>Peso:</strong> {{ pokemon.weight }}</p>
+<div class="container">
+  <h2>Buscar Pokémon</h2>
+
+  <input
+    type="text"
+    [(ngModel)]="nome"
+    placeholder="Digite o nome do Pokémon"
+  />
+  <button (click)="buscarPokemon()">Buscar</button>
+
+  <p *ngIf="erro" class="erro">{{ erro }}</p>
+
+  <div *ngIf="pokemon" class="resultado">
+    <h3>{{ pokemon.name | uppercase }}</h3>
+    <img [src]="pokemon?.sprites?.front_default" alt="Imagem de {{ pokemon.name }}" />
+    <p><strong>Altura:</strong> {{ pokemon.height }}</p>
+    <p><strong>Peso:</strong> {{ pokemon.weight }}</p>
+  </div>
 </div>
