@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { PokemonService } from '../../services/pokemon';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,14 +6,15 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-pokemon',
-  imports: [CommonModule, FormsModule, PokemonComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: 'pokemon.html',
   styleUrls: ['pokemon.scss'],
-  standalone: true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PokemonComponent implements OnInit {
 
-  pokemon: any;
+  pokemon = signal<null | any>(null)
   nome = '';
   erro: string = '';
   tipo: string = '';
@@ -25,7 +26,7 @@ export class PokemonComponent implements OnInit {
 
   buscarPokemon() {
     this.erro = '';
-    this.pokemon = null;
+    this.pokemon.set(null);
 
     const nome = this.nome.trim().toLowerCase();
 
@@ -43,7 +44,7 @@ export class PokemonComponent implements OnInit {
         const velocidade = res.stats?.find((stat: any) => stat.stat.name === 'speed')?.base_stat || 0;
         const movimentos = res.moves?.map((move: any) => move.move.name) || [];
 
-        this.pokemon = {
+        this.pokemon.set({
           ...res,
           tipo,
           hp,
@@ -52,7 +53,8 @@ export class PokemonComponent implements OnInit {
           velocidade,
           habilidades: res.abilities?.map((ability: any) => ability.ability.name) || [],
           movimentos: res.moves?.map((move: any) => move.move.name) || [],
-        };
+        })
+
       },
       error: () => {
         this.erro = `Pokémon "${this.nome}" não encontrado.`;
